@@ -315,7 +315,6 @@ class _CommandHandler():
 
     #TODO add loops, if, function declaration, class, declaration
     def handle(self, opcode, arg):
-        print(opcode, arg, self.stack)
         if opcode == op.NOP: pass
         elif opcode == op.POP_TOP: self.pop()
         elif opcode == op.ROT_TWO: self.stack[-2:] = self.rotate(2, self.stack[-2:])
@@ -444,9 +443,7 @@ class _CommandHandler():
             self.dec_indent()
         elif opcode == op.DELETE_NAME: self.result.append(self.indent() + "del {}".format(arg))
         elif opcode == op.STORE_NAME:
-            tos = self.pop()
-            if hasattr(tos, "skip_it") and not tos.skip_it:
-                self.result.append(self.indent() + _Assigment(arg, tos).__repr__())
+            self.result.append(self.indent() + _Assigment(arg, self.pop()).__repr__())
 
     def _make_list(self, argc):
         temp = temp = [self.stack.pop() for _ in range(argc)]
